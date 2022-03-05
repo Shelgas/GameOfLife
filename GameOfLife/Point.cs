@@ -20,6 +20,7 @@ namespace GameOfLife
 
         public void Draw()
         {
+            Console.SetCursorPosition(X, Y);
             Console.Write(Symbol);
         }
     }
