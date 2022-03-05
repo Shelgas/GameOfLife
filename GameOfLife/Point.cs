@@ -18,5 +18,9 @@ namespace GameOfLife
             Y = y;
         }
 
+        public void Draw()
+        {
+            Console.Write(Symbol);
+        }
     }
 }
