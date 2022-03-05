@@ -10,12 +10,13 @@ namespace GameOfLife
     {
         public readonly int X;
         public readonly int Y;
-        public const char Symbol = ' ';
+        public readonly char Symbol;
 
-        public Point(int x, int y)
+        public Point(int x, int y, char symbol = ' ')
         {
             X = x;
             Y = y;
+            Symbol = symbol;
         }
 
         public void Draw()
