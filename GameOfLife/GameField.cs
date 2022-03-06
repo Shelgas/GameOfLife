@@ -12,12 +12,14 @@ namespace GameOfLife
         public Point[,] Field { get; private set; }
         public readonly int Height;
         public readonly int Width;
+        public List<Point> Cells { get; set; }
 
-        public GameField(int width, int height)
+        public GameField(int width, int height, List<Point> cells)
         {
             Width = width;
             Height = height;
             Field = new Point[width, height];
+            Cells = cells;
             InitGameField();
         }
 
@@ -33,6 +35,8 @@ namespace GameOfLife
                     else if (x == 0 && y == Height - 1) Field[x, y] = new Point(x, y, '╚');
                     else if (y == 0 || y == Height - 1) Field[x, y] = new Point(x, y, '═');
                     else if (x == 0 || x == Width - 1) Field[x, y] = new Point(x, y, '║');
+                    else if (Cells.Any(c => c.X == x && c.Y == y)) Field[x, y] = new Point(x, y, '▓');
+                    else Field[x, y] = new Point(x, y);
                 }
             }
         }
@@ -46,6 +50,52 @@ namespace GameOfLife
                     Field[x, y].Draw();
                 }
             }
+        }
+
+        public void DrawNextGen()
+        {
+            Point[,] newField = new Point[Width, Height];
+            
+            for (int x = 1; x < Width - 1; x++)
+            {
+                for (int y = 1; y < Height - 1; y++)    
+                {
+                    newField[x, y] = ChekNewCell(Field[x, y]);
+                }
+            }
+
+            for (int x = 1; x < Width - 1; x++)
+            {
+                for (int y = 1; y < Height - 1; y++)
+                {
+                    Field[x, y] = newField[x, y];
+                }
+            }
+
+            Draw();
+        }
+
+
+        private Point ChekNewCell(Point oldPoint)
+        {
+            var cellsCount = 0;
+
+            if (oldPoint.X == 2 && oldPoint.Y == 2)
+            {
+                cellsCount = 0;
+            }
+
+            for (int x = oldPoint.X - 1; x < oldPoint.X + 2; x++)
+            {
+                for (int y = oldPoint.Y - 1; y < oldPoint.Y + 2; y++)
+                {
+                    if (x == oldPoint.X && oldPoint.Y == y) continue;
+                    if (Field[x,y].Symbol == '▓') cellsCount++;
+                    if (cellsCount == 3) 
+                        return new Point(oldPoint.X,oldPoint.Y, '▓');
+                }
+            }
+            return new Point(oldPoint.X, oldPoint.Y, ' ');
         }
 
     }
