@@ -18,6 +18,7 @@
             var gameField = new GameField(100, 20, initCells);
             gameField.Draw();
             gameField.DrawNextGen();
+            gameField.DrawNextGen();
         }
     }
 

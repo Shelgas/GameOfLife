@@ -60,7 +60,7 @@ namespace GameOfLife
             {
                 for (int y = 1; y < Height - 1; y++)    
                 {
-                    newField[x, y] = ChekNewCell(Field[x, y]);
+                    newField[x, y] = CheckNewCell(Field[x, y]);
                 }
             }
 
@@ -76,21 +76,24 @@ namespace GameOfLife
         }
 
 
-        private Point ChekNewCell(Point oldPoint)
+        private Point CheckNewCell(Point oldPoint)
         {
             var cellsCount = 0;
-
-            if (oldPoint.X == 2 && oldPoint.Y == 2)
-            {
-                cellsCount = 0;
-            }
 
             for (int x = oldPoint.X - 1; x < oldPoint.X + 2; x++)
             {
                 for (int y = oldPoint.Y - 1; y < oldPoint.Y + 2; y++)
                 {
-                    if (x == oldPoint.X && oldPoint.Y == y) continue;
-                    if (Field[x,y].Symbol == '▓') cellsCount++;
+
+                    var xRealCoordinate = x;
+                    var yRealCoordinate = y;
+
+                    if (xRealCoordinate == 0) xRealCoordinate = Width - 2;
+                    if (yRealCoordinate == 0) yRealCoordinate = Height - 2;
+                    if (xRealCoordinate == Width - 1) xRealCoordinate = 1;
+                    if (yRealCoordinate == Height - 1) yRealCoordinate = 1;
+
+                    if (Field[xRealCoordinate,yRealCoordinate].Symbol == '▓') cellsCount++;
                     if (cellsCount == 3) 
                         return new Point(oldPoint.X,oldPoint.Y, '▓');
                 }
