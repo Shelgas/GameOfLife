@@ -84,6 +84,7 @@ namespace GameOfLife
             {
                 for (int y = oldPoint.Y - 1; y < oldPoint.Y + 2; y++)
                 {
+                    if (x == oldPoint.X && y == oldPoint.Y) continue;
 
                     var xRealCoordinate = x;
                     var yRealCoordinate = y;
@@ -94,10 +95,14 @@ namespace GameOfLife
                     if (yRealCoordinate == Height - 1) yRealCoordinate = 1;
 
                     if (Field[xRealCoordinate,yRealCoordinate].Symbol == '▓') cellsCount++;
-                    if (cellsCount == 3) 
-                        return new Point(oldPoint.X,oldPoint.Y, '▓');
+                    
                 }
             }
+
+            if (cellsCount == 3 && oldPoint.Symbol == ' ')
+                return new Point(oldPoint.X, oldPoint.Y, '▓');
+            if (cellsCount > 1 && cellsCount < 4 && oldPoint.Symbol == '▓')
+                return new Point(oldPoint.X, oldPoint.Y, '▓');
             return new Point(oldPoint.X, oldPoint.Y, ' ');
         }
 
